@@ -24,3 +24,33 @@ printk(KERN_INFO "Removing Kernel Module\n")
 module_init(simple_init);
 module_exit(simple_exit);
 
+MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Simple Module");
+MODULE_AUTHOR("SGG");
+
+!make
+//compiled to simple.ko.
+!sudo insmod simple.ko
+//Load the kernel module 'simple'.
+!lsmode
+//Check whether the module 'simple' has loaded.
+!dmesg
+//Check the contents of this messages in the kernel log buffer, we will see the message "Loading Kernel Module".
+!sudo rmmod simple
+//Remove the kernel module, and the .ko suffix is unnecessary.
+!dmesg
+//Ensure the module has been removed.
+
+//Print out the value of GOLDEN_RATIO_PRIME in the simple_init() function.
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/hash.h>
+#include <linux/gcd.h>
+
+int simple_init(void)
+{
+printk(KERN_INFO "%lu\n", GOLDEN_RATIO_PRIME);
+return 0;
+}
+
